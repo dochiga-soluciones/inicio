@@ -1,0 +1,678 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>DojhoGroup — Consultoría Contable</title>
+  <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;700;900&family=DM+Sans:wght@300;400;500&display=swap" rel="stylesheet"/>
+  <style>
+    :root {
+      --bg: #0a0c0f;
+      --surface: #111318;
+      --gold: #c9a84c;
+      --gold-light: #e8c96a;
+      --white: #f0ece4;
+      --muted: #7a7672;
+      --border: rgba(201,168,76,0.15);
+    }
+
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+    html { scroll-behavior: smooth; }
+
+    body {
+      background: var(--bg);
+      color: var(--white);
+      font-family: 'DM Sans', sans-serif;
+      font-weight: 300;
+      overflow-x: hidden;
+    }
+
+    /* ── NAV ── */
+    nav {
+      position: fixed; top: 0; left: 0; right: 0; z-index: 100;
+      display: flex; align-items: center; justify-content: space-between;
+      padding: 1.2rem 6%;
+      background: rgba(10,12,15,0.85);
+      backdrop-filter: blur(14px);
+      border-bottom: 1px solid var(--border);
+      transition: padding .3s;
+    }
+
+    .logo {
+      font-family: 'Playfair Display', serif;
+      font-size: 1.5rem;
+      font-weight: 900;
+      color: var(--gold);
+      letter-spacing: .05em;
+      text-decoration: none;
+    }
+
+    .logo span { color: var(--white); }
+
+    .nav-links { display: flex; gap: 2.5rem; list-style: none; }
+
+    .nav-links a {
+      color: var(--muted);
+      text-decoration: none;
+      font-size: .9rem;
+      letter-spacing: .08em;
+      text-transform: uppercase;
+      transition: color .3s;
+      position: relative;
+    }
+
+    .nav-links a::after {
+      content: '';
+      position: absolute; bottom: -4px; left: 0; right: 0;
+      height: 1px;
+      background: var(--gold);
+      transform: scaleX(0);
+      transition: transform .3s;
+      transform-origin: left;
+    }
+
+    .nav-links a:hover { color: var(--gold); }
+    .nav-links a:hover::after { transform: scaleX(1); }
+
+    .nav-cta {
+      background: var(--gold);
+      color: var(--bg) !important;
+      padding: .5rem 1.4rem;
+      border-radius: 2px;
+      font-weight: 500 !important;
+      transition: background .3s !important;
+    }
+    .nav-cta:hover { background: var(--gold-light) !important; }
+    .nav-cta::after { display: none !important; }
+
+    /* hamburger */
+    .burger { display: none; flex-direction: column; gap: 5px; cursor: pointer; padding: 4px; }
+    .burger span { display: block; width: 24px; height: 2px; background: var(--gold); transition: .3s; }
+
+    /* ── HERO ── */
+    #inicio {
+      min-height: 100vh;
+      display: flex; align-items: center;
+      padding: 8rem 6% 4rem;
+      position: relative;
+      overflow: hidden;
+    }
+
+    .hero-bg {
+      position: absolute; inset: 0;
+      background:
+        radial-gradient(ellipse 60% 50% at 70% 50%, rgba(201,168,76,.08) 0%, transparent 70%),
+        radial-gradient(ellipse 40% 60% at 20% 80%, rgba(201,168,76,.04) 0%, transparent 60%);
+    }
+
+    .hero-grid {
+      position: absolute; inset: 0;
+      background-image:
+        linear-gradient(rgba(201,168,76,.04) 1px, transparent 1px),
+        linear-gradient(90deg, rgba(201,168,76,.04) 1px, transparent 1px);
+      background-size: 60px 60px;
+      mask-image: radial-gradient(ellipse at center, black 30%, transparent 80%);
+    }
+
+    .hero-content { position: relative; max-width: 750px; }
+
+    .hero-tag {
+      display: inline-flex; align-items: center; gap: .6rem;
+      font-size: .75rem; letter-spacing: .2em; text-transform: uppercase;
+      color: var(--gold); margin-bottom: 1.5rem;
+      border: 1px solid var(--border); padding: .4rem 1rem; border-radius: 2px;
+      animation: fadeUp .8s ease both;
+    }
+
+    .hero-tag::before { content: ''; width: 20px; height: 1px; background: var(--gold); }
+
+    h1 {
+      font-family: 'Playfair Display', serif;
+      font-size: clamp(3rem, 7vw, 6rem);
+      font-weight: 900;
+      line-height: 1.05;
+      margin-bottom: 1.5rem;
+      animation: fadeUp .8s .15s ease both;
+    }
+
+    h1 em { font-style: italic; color: var(--gold); }
+
+    .hero-desc {
+      font-size: 1.1rem; color: var(--muted); line-height: 1.8;
+      max-width: 520px; margin-bottom: 2.5rem;
+      animation: fadeUp .8s .3s ease both;
+    }
+
+    .hero-actions { display: flex; gap: 1rem; flex-wrap: wrap; animation: fadeUp .8s .45s ease both; }
+
+    .btn-primary {
+      background: var(--gold); color: var(--bg);
+      padding: .85rem 2rem; font-family: 'DM Sans', sans-serif;
+      font-weight: 500; font-size: .95rem; letter-spacing: .06em; text-transform: uppercase;
+      border: none; cursor: pointer; text-decoration: none;
+      transition: background .3s, transform .2s;
+      display: inline-block;
+    }
+    .btn-primary:hover { background: var(--gold-light); transform: translateY(-2px); }
+
+    .btn-outline {
+      background: transparent; color: var(--white);
+      padding: .85rem 2rem; font-family: 'DM Sans', sans-serif;
+      font-weight: 500; font-size: .95rem; letter-spacing: .06em; text-transform: uppercase;
+      border: 1px solid var(--border); cursor: pointer; text-decoration: none;
+      transition: border-color .3s, color .3s;
+      display: inline-block;
+    }
+    .btn-outline:hover { border-color: var(--gold); color: var(--gold); }
+
+    .hero-stats {
+      position: absolute; right: 6%; bottom: 12%;
+      display: flex; flex-direction: column; gap: 1.5rem;
+      animation: fadeUp .8s .6s ease both;
+    }
+
+    .stat { text-align: right; }
+    .stat-num { font-family: 'Playfair Display', serif; font-size: 2.5rem; font-weight: 700; color: var(--gold); }
+    .stat-label { font-size: .75rem; letter-spacing: .15em; text-transform: uppercase; color: var(--muted); }
+
+    /* ── SECTIONS COMMON ── */
+    section { padding: 7rem 6%; }
+
+    .section-label {
+      font-size: .75rem; letter-spacing: .2em; text-transform: uppercase;
+      color: var(--gold); margin-bottom: .8rem;
+      display: flex; align-items: center; gap: .8rem;
+    }
+    .section-label::before { content: ''; width: 30px; height: 1px; background: var(--gold); }
+
+    h2 {
+      font-family: 'Playfair Display', serif;
+      font-size: clamp(2rem, 4vw, 3.2rem);
+      font-weight: 700; line-height: 1.15; margin-bottom: 1rem;
+    }
+
+    /* ── SERVICIOS ── */
+    #servicios { background: var(--surface); }
+
+    .services-intro {
+      display: grid; grid-template-columns: 1fr 1fr; gap: 4rem;
+      align-items: end; margin-bottom: 4rem;
+    }
+
+    .services-intro p { color: var(--muted); line-height: 1.8; max-width: 400px; }
+
+    .services-grid {
+      display: grid; grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+      gap: 1.5px; background: var(--border);
+    }
+
+    .service-card {
+      background: var(--surface);
+      padding: 2.5rem 2rem;
+      position: relative; overflow: hidden;
+      transition: background .3s;
+      cursor: default;
+    }
+
+    .service-card::before {
+      content: '';
+      position: absolute; bottom: 0; left: 0;
+      width: 0; height: 2px;
+      background: var(--gold);
+      transition: width .4s;
+    }
+
+    .service-card:hover::before { width: 100%; }
+    .service-card:hover { background: rgba(201,168,76,.04); }
+
+    .service-icon {
+      width: 48px; height: 48px; margin-bottom: 1.5rem;
+      background: var(--border); border-radius: 2px;
+      display: flex; align-items: center; justify-content: center;
+      font-size: 1.3rem;
+    }
+
+    .service-card h3 {
+      font-family: 'Playfair Display', serif;
+      font-size: 1.2rem; margin-bottom: .8rem;
+    }
+
+    .service-card p { color: var(--muted); font-size: .9rem; line-height: 1.7; }
+
+    .service-num {
+      position: absolute; top: 1.5rem; right: 1.8rem;
+      font-family: 'Playfair Display', serif;
+      font-size: .9rem; color: var(--border);
+    }
+
+    /* ── TIENDA ── */
+    #tienda { background: var(--bg); }
+
+    .shop-header {
+      display: flex; justify-content: space-between; align-items: flex-end;
+      margin-bottom: 3rem; flex-wrap: wrap; gap: 1.5rem;
+    }
+
+    .products-grid {
+      display: grid; grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
+      gap: 2rem;
+    }
+
+    .product-card {
+      background: var(--surface);
+      border: 1px solid var(--border);
+      overflow: hidden;
+      transition: transform .3s, border-color .3s;
+    }
+
+    .product-card:hover { transform: translateY(-6px); border-color: var(--gold); }
+
+    .product-img {
+      height: 180px;
+      background: linear-gradient(135deg, rgba(201,168,76,.1), rgba(201,168,76,.02));
+      display: flex; align-items: center; justify-content: center;
+      font-size: 3rem;
+    }
+
+    .product-info { padding: 1.5rem; }
+
+    .product-info h3 {
+      font-family: 'Playfair Display', serif;
+      font-size: 1.1rem; margin-bottom: .5rem;
+    }
+
+    .product-info p { color: var(--muted); font-size: .85rem; margin-bottom: 1.2rem; line-height: 1.6; }
+
+    .product-price {
+      display: flex; justify-content: space-between; align-items: center;
+    }
+
+    .price { font-family: 'Playfair Display', serif; color: var(--gold); font-size: 1.2rem; }
+
+    .btn-cart {
+      background: transparent; color: var(--gold);
+      border: 1px solid var(--gold);
+      padding: .4rem .9rem; font-size: .8rem; cursor: pointer;
+      letter-spacing: .08em; text-transform: uppercase;
+      transition: background .3s, color .3s;
+    }
+    .btn-cart:hover { background: var(--gold); color: var(--bg); }
+
+    /* ── CONTACTO ── */
+    #contacto { background: var(--surface); }
+
+    .contact-grid {
+      display: grid; grid-template-columns: 1fr 1.2fr; gap: 5rem;
+      align-items: start; margin-top: 3rem;
+    }
+
+    .contact-info h3 {
+      font-family: 'Playfair Display', serif;
+      font-size: 1.4rem; margin-bottom: 2rem;
+    }
+
+    .contact-item {
+      display: flex; gap: 1.2rem; margin-bottom: 2rem;
+      align-items: flex-start;
+    }
+
+    .contact-icon {
+      width: 44px; height: 44px; flex-shrink: 0;
+      border: 1px solid var(--border);
+      display: flex; align-items: center; justify-content: center;
+      font-size: 1.1rem;
+    }
+
+    .contact-item h4 { font-size: .75rem; letter-spacing: .15em; text-transform: uppercase; color: var(--gold); margin-bottom: .3rem; }
+    .contact-item p, .contact-item a { color: var(--white); text-decoration: none; font-size: .95rem; }
+    .contact-item a:hover { color: var(--gold); }
+
+    .contact-form { display: flex; flex-direction: column; gap: 1.2rem; }
+
+    .form-row { display: grid; grid-template-columns: 1fr 1fr; gap: 1.2rem; }
+
+    .form-group { display: flex; flex-direction: column; gap: .5rem; }
+
+    .form-group label { font-size: .75rem; letter-spacing: .15em; text-transform: uppercase; color: var(--muted); }
+
+    .form-group input,
+    .form-group textarea,
+    .form-group select {
+      background: var(--bg);
+      border: 1px solid var(--border);
+      color: var(--white);
+      padding: .85rem 1rem;
+      font-family: 'DM Sans', sans-serif;
+      font-size: .95rem;
+      outline: none;
+      transition: border-color .3s;
+      resize: vertical;
+    }
+
+    .form-group input:focus,
+    .form-group textarea:focus,
+    .form-group select:focus { border-color: var(--gold); }
+
+    .form-group select option { background: var(--bg); }
+
+    /* ── FOOTER ── */
+    footer {
+      background: #06080a;
+      padding: 3rem 6%;
+      display: flex; justify-content: space-between; align-items: center;
+      flex-wrap: wrap; gap: 1.5rem;
+      border-top: 1px solid var(--border);
+    }
+
+    .footer-logo { font-family: 'Playfair Display', serif; font-size: 1.3rem; font-weight: 900; color: var(--gold); }
+    .footer-logo span { color: var(--muted); }
+    footer p { color: var(--muted); font-size: .85rem; }
+
+    .footer-links { display: flex; gap: 2rem; }
+    .footer-links a { color: var(--muted); text-decoration: none; font-size: .85rem; transition: color .3s; }
+    .footer-links a:hover { color: var(--gold); }
+
+    /* ── ANIMATIONS ── */
+    @keyframes fadeUp {
+      from { opacity: 0; transform: translateY(30px); }
+      to   { opacity: 1; transform: translateY(0); }
+    }
+
+    .reveal {
+      opacity: 0; transform: translateY(40px);
+      transition: opacity .7s ease, transform .7s ease;
+    }
+    .reveal.visible { opacity: 1; transform: none; }
+
+    /* ── RESPONSIVE ── */
+    @media (max-width: 900px) {
+      .nav-links { display: none; flex-direction: column; position: absolute;
+        top: 100%; left: 0; right: 0; background: var(--surface);
+        padding: 2rem 6%; gap: 1.5rem; border-bottom: 1px solid var(--border); }
+      .nav-links.open { display: flex; }
+      .burger { display: flex; }
+      .hero-stats { display: none; }
+      .services-intro { grid-template-columns: 1fr; gap: 1.5rem; }
+      .contact-grid { grid-template-columns: 1fr; gap: 3rem; }
+      .form-row { grid-template-columns: 1fr; }
+    }
+
+    @media (max-width: 600px) {
+      nav { padding: 1rem 4%; }
+      section { padding: 5rem 4%; }
+      footer { flex-direction: column; text-align: center; }
+    }
+  </style>
+</head>
+<body>
+
+<!-- NAV -->
+<nav id="navbar">
+  <a href="#inicio" class="logo">Dojho<span>Group</span></a>
+  <ul class="nav-links" id="navLinks">
+    <li><a href="#inicio">Inicio</a></li>
+    <li><a href="#servicios">Servicios</a></li>
+    <li><a href="#tienda">Tienda</a></li>
+    <li><a href="#contacto" class="nav-cta">Contacto</a></li>
+  </ul>
+  <div class="burger" id="burger" aria-label="Menú">
+    <span></span><span></span><span></span>
+  </div>
+</nav>
+
+<!-- HERO -->
+<section id="inicio">
+  <div class="hero-bg"></div>
+  <div class="hero-grid"></div>
+  <div class="hero-content">
+    <div class="hero-tag">Expertos en consultoría contable</div>
+    <h1>Claridad <em>financiera</em> para tu empresa</h1>
+    <p class="hero-desc">En DojhoGroup transformamos la complejidad contable en decisiones estratégicas claras. Servicios de consultoría, herramientas y soluciones diseñadas para el crecimiento de tu negocio.</p>
+    <div class="hero-actions">
+      <a href="#servicios" class="btn-primary">Nuestros servicios</a>
+      <a href="#contacto" class="btn-outline">Hablar con un experto</a>
+    </div>
+  </div>
+  <div class="hero-stats">
+    <div class="stat"><div class="stat-num">10+</div><div class="stat-label">Años de experiencia</div></div>
+    <div class="stat"><div class="stat-num">500+</div><div class="stat-label">Clientes satisfechos</div></div>
+    <div class="stat"><div class="stat-num">100%</div><div class="stat-label">Compromiso</div></div>
+  </div>
+</section>
+
+<!-- SERVICIOS -->
+<section id="servicios">
+  <div class="services-intro reveal">
+    <div>
+      <div class="section-label">Lo que ofrecemos</div>
+      <h2>Servicios especializados para tu negocio</h2>
+    </div>
+    <p>Brindamos soluciones contables y financieras integrales, adaptadas a las necesidades específicas de cada empresa, con rigor técnico y enfoque estratégico.</p>
+  </div>
+
+  <div class="services-grid reveal">
+    <div class="service-card">
+      <div class="service-num">01</div>
+      <div class="service-icon">📊</div>
+      <h3>Consultoría Contable</h3>
+      <p>Asesoramiento experto en contabilidad general, análisis financiero y optimización de procesos contables para mejorar la salud financiera de tu empresa.</p>
+    </div>
+    <div class="service-card">
+      <div class="service-num">02</div>
+      <div class="service-icon">📋</div>
+      <h3>Consultoría Tributaria</h3>
+      <p>Planificación fiscal estratégica, declaraciones de impuestos y cumplimiento normativo para minimizar cargas tributarias dentro del marco legal.</p>
+    </div>
+    <div class="service-card">
+      <div class="service-num">03</div>
+      <div class="service-icon">🛠️</div>
+      <h3>Herramientas Contables</h3>
+      <p>Venta e implementación de software y herramientas especializadas para automatizar y optimizar los procesos contables de tu organización.</p>
+    </div>
+    <div class="service-card">
+      <div class="service-num">04</div>
+      <div class="service-icon">📈</div>
+      <h3>Auditoría Financiera</h3>
+      <p>Revisión exhaustiva de estados financieros, identificación de riesgos y emisión de informes de auditoría para garantizar transparencia y cumplimiento.</p>
+    </div>
+    <div class="service-card">
+      <div class="service-num">05</div>
+      <div class="service-icon">💼</div>
+      <h3>Nómina y RRHH</h3>
+      <p>Gestión integral de nóminas, liquidaciones, seguridad social y prestaciones laborales con total precisión y puntualidad.</p>
+    </div>
+    <div class="service-card">
+      <div class="service-num">06</div>
+      <div class="service-icon">🎓</div>
+      <h3>Capacitación Contable</h3>
+      <p>Programas de formación y entrenamiento para equipos de trabajo en áreas contables, tributarias y uso de herramientas financieras.</p>
+    </div>
+  </div>
+</section>
+
+<!-- TIENDA -->
+<section id="tienda">
+  <div class="shop-header reveal">
+    <div>
+      <div class="section-label">Tienda</div>
+      <h2>Herramientas & Soluciones</h2>
+    </div>
+    <a href="#contacto" class="btn-outline">Ver catálogo completo</a>
+  </div>
+
+  <div class="products-grid reveal">
+    <div class="product-card">
+      <div class="product-img">📊</div>
+      <div class="product-info">
+        <h3>Software Contable Pro</h3>
+        <p>Plataforma integral para gestión contable, facturación electrónica y reportes financieros en tiempo real.</p>
+        <div class="product-price">
+          <span class="price">Consultar</span>
+          <button class="btn-cart" onclick="cotizar('Software Contable Pro')">Cotizar</button>
+        </div>
+      </div>
+    </div>
+    <div class="product-card">
+      <div class="product-img">📑</div>
+      <div class="product-info">
+        <h3>Pack Plantillas Fiscales</h3>
+        <p>Colección de plantillas optimizadas para declaraciones, balances y estados de resultados.</p>
+        <div class="product-price">
+          <span class="price">Consultar</span>
+          <button class="btn-cart" onclick="cotizar('Pack Plantillas Fiscales')">Cotizar</button>
+        </div>
+      </div>
+    </div>
+    <div class="product-card">
+      <div class="product-img">🔐</div>
+      <div class="product-info">
+        <h3>Firma Digital Empresarial</h3>
+        <p>Solución certificada de firma electrónica para documentos contables y tributarios con plena validez legal.</p>
+        <div class="product-price">
+          <span class="price">Consultar</span>
+          <button class="btn-cart" onclick="cotizar('Firma Digital Empresarial')">Cotizar</button>
+        </div>
+      </div>
+    </div>
+    <div class="product-card">
+      <div class="product-img">📂</div>
+      <div class="product-info">
+        <h3>Módulo Nómina Digital</h3>
+        <p>Automatiza el procesamiento de nóminas, liquidaciones y generación de comprobantes de pago.</p>
+        <div class="product-price">
+          <span class="price">Consultar</span>
+          <button class="btn-cart" onclick="cotizar('Módulo Nómina Digital')">Cotizar</button>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- CONTACTO -->
+<section id="contacto">
+  <div class="section-label reveal">Contáctanos</div>
+  <h2 class="reveal">Estamos listos para ayudarte</h2>
+
+  <div class="contact-grid">
+    <div class="contact-info reveal">
+      <h3>Ponerte en contacto con nosotros es el primer paso hacia una gestión financiera más sólida.</h3>
+
+      <div class="contact-item">
+        <div class="contact-icon">📞</div>
+        <div>
+          <h4>Teléfono / WhatsApp</h4>
+          <a href="tel:+31545254632">+315 452 54632</a>
+        </div>
+      </div>
+
+      <div class="contact-item">
+        <div class="contact-icon">✉️</div>
+        <div>
+          <h4>Correo de soporte</h4>
+          <a href="mailto:soportedojhogroup@dohho.com">soportedojhogroup@dohho.com</a>
+        </div>
+      </div>
+
+      <div class="contact-item">
+        <div class="contact-icon">🕐</div>
+        <div>
+          <h4>Horario de atención</h4>
+          <p>Lunes a Viernes: 8:00 am – 6:00 pm</p>
+        </div>
+      </div>
+    </div>
+
+    <form class="contact-form reveal" onsubmit="handleForm(event)">
+      <div class="form-row">
+        <div class="form-group">
+          <label>Nombre</label>
+          <input type="text" placeholder="Tu nombre" required />
+        </div>
+        <div class="form-group">
+          <label>Empresa</label>
+          <input type="text" placeholder="Nombre de la empresa" />
+        </div>
+      </div>
+      <div class="form-row">
+        <div class="form-group">
+          <label>Correo electrónico</label>
+          <input type="email" placeholder="correo@empresa.com" required />
+        </div>
+        <div class="form-group">
+          <label>Teléfono</label>
+          <input type="tel" placeholder="+57 300 000 0000" />
+        </div>
+      </div>
+      <div class="form-group">
+        <label>Servicio de interés</label>
+        <select>
+          <option value="">Selecciona un servicio...</option>
+          <option>Consultoría Contable</option>
+          <option>Consultoría Tributaria</option>
+          <option>Herramientas Contables</option>
+          <option>Auditoría Financiera</option>
+          <option>Nómina y RRHH</option>
+          <option>Capacitación Contable</option>
+          <option>Otro</option>
+        </select>
+      </div>
+      <div class="form-group">
+        <label>Mensaje</label>
+        <textarea rows="4" placeholder="Cuéntanos sobre tu proyecto o necesidad..."></textarea>
+      </div>
+      <button type="submit" class="btn-primary">Enviar mensaje →</button>
+    </form>
+  </div>
+</section>
+
+<!-- FOOTER -->
+<footer>
+  <div>
+    <div class="footer-logo">Dojho<span>Group</span></div>
+  </div>
+  <div class="footer-links">
+    <a href="#inicio">Inicio</a>
+    <a href="#servicios">Servicios</a>
+    <a href="#tienda">Tienda</a>
+    <a href="#contacto">Contacto</a>
+  </div>
+  <p>© 2026 DojhoGroup. Todos los derechos reservados.</p>
+</footer>
+
+<script>
+  // Mobile menu
+  const burger = document.getElementById('burger');
+  const navLinks = document.getElementById('navLinks');
+  burger.addEventListener('click', () => navLinks.classList.toggle('open'));
+  navLinks.querySelectorAll('a').forEach(a => a.addEventListener('click', () => navLinks.classList.remove('open')));
+
+  // Scroll reveal
+  const reveals = document.querySelectorAll('.reveal');
+  const observer = new IntersectionObserver(entries => {
+    entries.forEach(e => { if (e.isIntersecting) { e.target.classList.add('visible'); observer.unobserve(e.target); } });
+  }, { threshold: 0.1 });
+  reveals.forEach(el => observer.observe(el));
+
+  // Navbar scroll effect
+  window.addEventListener('scroll', () => {
+    document.getElementById('navbar').style.padding = scrollY > 50 ? '.8rem 6%' : '1.2rem 6%';
+  });
+
+  // Product cotizar
+  function cotizar(product) {
+    const subject = encodeURIComponent('Cotización: ' + product);
+    window.location.href = `mailto:soportedojhogroup@dohho.com?subject=${subject}`;
+  }
+
+  // Form handler
+  function handleForm(e) {
+    e.preventDefault();
+    const btn = e.target.querySelector('button[type="submit"]');
+    btn.textContent = '✓ Mensaje enviado';
+    btn.style.background = '#2a7a4b';
+    setTimeout(() => { btn.textContent = 'Enviar mensaje →'; btn.style.background = ''; e.target.reset(); }, 3000);
+  }
+</script>
+</body>
+</html>
